@@ -1,0 +1,146 @@
+{
+  "Sales": {
+    "chart": "bar",
+    "unit": "rs_cr",
+    "meaning": "The total money the company brought in from selling its products or services in the quarter, before any costs are taken out.",
+    "up": "{co} is selling more than before, so more money is coming in. Healthy, as long as costs don't grow faster.",
+    "down": "{co} is bringing in less money than before. This can mean fewer customers or lower prices, and it puts pressure on profit.",
+    "flat": "{co}'s sales are holding steady: not growing, not shrinking."
+  },
+  "Expenses": {
+    "chart": "bar",
+    "unit": "rs_cr",
+    "meaning": "The money spent to run the business in the quarter: salaries, raw materials, rent, and so on.",
+    "up": "{co}'s costs are rising. That's fine if sales are rising too, but a worry if sales are flat or falling.",
+    "down": "{co} is spending less to run the business, which helps profit, unless it is cutting things that bring in future sales.",
+    "flat": "{co}'s running costs are steady."
+  },
+  "Operating Profit": {
+    "chart": "bar",
+    "unit": "rs_cr",
+    "meaning": "What is left from sales after paying the everyday costs of running the business, before interest and tax. It shows how well the core business earns.",
+    "up": "{co}'s core business is earning more from its day-to-day work.",
+    "down": "{co}'s core business is earning less. Costs may be growing faster than sales.",
+    "flat": "{co}'s core earnings are steady."
+  },
+  "Profit before tax": {
+    "chart": "bar",
+    "unit": "rs_cr",
+    "meaning": "What the company earned after all costs and interest, but before paying tax.",
+    "up": "{co} is earning more before the tax bill, a good sign for the final profit.",
+    "down": "{co} is earning less before tax, which will shrink the final profit too.",
+    "flat": "{co}'s pre-tax earnings are steady."
+  },
+  "Interest": {
+    "chart": "bar",
+    "unit": "rs_cr",
+    "meaning": "The cost of the money the company has borrowed. Companies with a lot of loans pay a lot of interest.",
+    "up": "{co} is paying more to its lenders, which reduces profit. It may be borrowing more or at higher rates.",
+    "down": "{co} is paying less interest. It may have repaid some loans, which leaves more profit for shareholders.",
+    "flat": "{co}'s borrowing cost is steady."
+  },
+  "Net Profit": {
+    "chart": "bar",
+    "unit": "rs_cr",
+    "meaning": "The final profit after every cost, interest and tax. This is the money truly left for the owners (shareholders).",
+    "up": "{co} is keeping more money at the end, which can go to dividends, repaying loans or growing the business.",
+    "down": "{co} is keeping less money at the end, leaving less for dividends, repaying loans or growth.",
+    "flat": "{co}'s final profit is steady."
+  },
+  "OPM %": {
+    "chart": "line",
+    "unit": "percent",
+    "meaning": "Operating profit margin: out of every Rs 100 of sales, how many rupees remain as operating profit. Higher means the company is better at turning sales into profit.",
+    "up": "{co} is keeping more of every Rs 100 it sells, a sign of better efficiency or stronger pricing.",
+    "down": "{co} is keeping less of every Rs 100 it sells. Costs are eating into its earnings.",
+    "flat": "{co} is keeping about the same share of each sale as before."
+  },
+  "Tax %": {
+    "chart": "line",
+    "unit": "percent",
+    "meaning": "The share of the company's pre-tax profit that goes to the government as tax.",
+    "up": "{co} is paying a bigger slice of its profit as tax, so less is left for shareholders. One-off items can cause this.",
+    "down": "{co} is paying a smaller slice as tax, which leaves more profit for shareholders. This can be a one-off.",
+    "flat": "{co}'s tax share is steady."
+  },
+  "EPS": {
+    "chart": "line",
+    "unit": "number",
+    "meaning": "Earnings per share: the company's net profit divided by its number of shares. It's the profit that belongs to one share.",
+    "up": "Each {co} share is earning more profit than before, which usually supports the share's value over time.",
+    "down": "Each {co} share is earning less profit than before, which can weigh on the share's value.",
+    "flat": "Each {co} share is earning about the same as before."
+  },
+  "ROE % (annualised)": {
+    "chart": "line",
+    "unit": "percent",
+    "meaning": "Return on equity: how much profit the company makes for every Rs 100 the owners have invested in it. Higher means the owners' money is working well. Shown as a yearly figure (quarter x 4).",
+    "up": "{co} is making more profit from its owners' money than before.",
+    "down": "{co} is making less profit from its owners' money than before.",
+    "flat": "{co} is using its owners' money about as well as before."
+  },
+  "ROCE % (annualised)": {
+    "chart": "line",
+    "unit": "percent",
+    "meaning": "Return on capital employed: profit made for every Rs 100 of all the money (owners' plus borrowed) working in the business. Higher means the business uses its money well. Shown as a yearly figure (quarter x 4).",
+    "up": "{co} is earning more from all the money it has put to work.",
+    "down": "{co} is earning less from all the money it has put to work.",
+    "flat": "{co} is using its money about as well as before."
+  },
+  "Price (qtr-end)": {
+    "chart": "line",
+    "unit": "number",
+    "meaning": "The price of one share on the last trading day of the quarter.",
+    "up": "{co}'s shares are worth more than before: investors are paying more for them. This reflects market mood, not just results.",
+    "down": "{co}'s shares are worth less than before: investors are paying less for them. This reflects market mood, not just results.",
+    "flat": "{co}'s share price is about where it was."
+  },
+  "P/E (annualised qtr EPS)": {
+    "chart": "line",
+    "unit": "number",
+    "meaning": "Price-to-earnings: how many rupees investors pay for every Rs 1 the company earns in a year. A high number means the share is pricey compared to its profit (or investors expect growth); a low number can mean cheap, or that investors are worried.",
+    "up": "Investors are paying more for each rupee of {co}'s profit. The share got pricier compared to what it earns.",
+    "down": "Investors are paying less for each rupee of {co}'s profit. The share got cheaper compared to what it earns.",
+    "flat": "{co}'s price compared to its profit is about the same."
+  },
+  "Market Cap": {
+    "chart": "line",
+    "unit": "rs_cr",
+    "meaning": "Market capitalisation: the total value of all the company's shares at today's price, or what the market thinks the whole company is worth. Bigger usually means a larger, more established company.",
+    "up": "The market values {co} higher than before.",
+    "down": "The market values {co} lower than before.",
+    "flat": "The market's value of {co} is about the same."
+  },
+  "Book Value / share": {
+    "chart": "line",
+    "unit": "number",
+    "meaning": "What each share would be worth on paper if the company sold everything it owns and paid off all its debts.",
+    "up": "{co}'s net assets per share are growing, so the company is building up value over time.",
+    "down": "{co}'s net assets per share are shrinking, which can come from losses, big payouts or more debt.",
+    "flat": "{co}'s net assets per share are steady."
+  },
+  "Dividend Yield %": {
+    "chart": "line",
+    "unit": "percent",
+    "meaning": "The yearly cash dividend a company pays, shown as a percentage of the share price. It's the income you get just for holding the share.",
+    "up": "Holding {co} now pays more cash each year compared to the share price (the price may also have dropped).",
+    "down": "Holding {co} now pays less cash each year compared to the share price (the price may also have risen).",
+    "flat": "{co}'s cash payout compared to its price is steady."
+  },
+  "52W High": {
+    "chart": "line",
+    "unit": "number",
+    "meaning": "The highest price the share reached in the last 52 weeks (one year).",
+    "up": "{co}'s best price of the year keeps getting higher, so the share has been trending upward.",
+    "down": "{co}'s best price of the year is getting lower, so the older high prices are dropping out of the window.",
+    "flat": "{co}'s best price of the year hasn't changed."
+  },
+  "52W Low": {
+    "chart": "line",
+    "unit": "number",
+    "meaning": "The lowest price the share fell to in the last 52 weeks (one year).",
+    "up": "Even {co}'s lowest price of the year is rising, a sign of a steady climb.",
+    "down": "{co} keeps hitting lower prices, so the share has been falling.",
+    "flat": "{co}'s lowest price of the year hasn't changed."
+  }
+}
