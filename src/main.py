@@ -293,21 +293,9 @@ if raw and params and m is not None and not m.empty:
         rows = []
         for p in params:
             vals = {n: latest_value(d, p) for n, d in all_data.items()}
-            mine = vals[company]
-            others = [vals[n] for n in peer_names if pd.notna(vals[n])]
             row = {"Parameter": p}
             for n, v in vals.items():
                 row[n] = fmt(p, v) if pd.notna(v) else "n/a"
-            if pd.notna(mine) and others:
-                med = float(np.median(others))
-                row["Top-3 median"] = fmt(p, med)
-                row["Vs top-3 median"] = ("Above" if mine > med
-                                          else "Below" if mine < med else "Equal")
-                rank = 1 + sum(v > mine for v in others)
-                row["Rank (1 = highest)"] = f"{rank} of {len(others) + 1}"
-            else:
-                row["Top-3 median"] = row["Vs top-3 median"] = "n/a"
-                row["Rank (1 = highest)"] = "n/a"
             rows.append(row)
         # st.dataframe can't style header cells, so render an HTML table
         # (peer company headers get a blue tint; works in light and dark mode)
@@ -331,10 +319,8 @@ if raw and params and m is not None and not m.empty:
 </style>
 <div class="xtbl-wrap"><table class="xtbl">
 <thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>""")
-        st.caption("Rank 1 means the highest value, not necessarily the best "
-                   "(for example, a high Interest or Expenses figure is not "
-                   "good news). Rs Cr figures also reflect company size, so "
-                   "ratios like OPM %, ROE % and ROCE % compare more fairly.")
+        st.caption("Rs Cr figures reflect company size, so ratios like OPM %, "
+                   "ROE % and ROCE % compare more fairly.")
 
         # ---- chart: one metric over time, all companies together
         metric = st.selectbox("Compare trend of", params, key="cross_metric")
