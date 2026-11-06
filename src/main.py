@@ -236,3 +236,132 @@ if raw and params:
                     right.plotly_chart(fig, width="stretch")
                 else:
                     right.caption("Data not available for this company.")
+
+
+# ---------------------------------------------------------------------------
+# Cross metrics analysis: entered company vs the top 3 companies
+# (added block - nothing above this line was changed)
+# ---------------------------------------------------------------------------
+
+# Largest Indian companies by market cap. Edit this list to change the
+# benchmark set. The first 3 are used; if the entered company is one of them,
+# it is skipped and the next one in the list takes its place.
+TOP_COMPANIES = ["RELIANCE.NS", "HDFCBANK.NS", "BHARTIARTL.NS",
+                 "TCS.NS", "ICICIBANK.NS"]
+
+
+def get_peers(symbol: str, n: int = 3) -> list:
+    me = symbol.rsplit(".", 1)[0]
+    return [s for s in TOP_COMPANIES if s.rsplit(".", 1)[0] != me][:n]
+
+
+def load_peers(symbol: str) -> dict:
+    """{'RELIANCE': metrics_df, ...}; reuses build_metrics (cached for 1 hour)."""
+    out = {}
+    for s in get_peers(symbol):
+        try:
+            pm = build_metrics(s)
+        except Exception:
+            continue
+        if not pm.empty:
+            out[s.rsplit(".", 1)[0]] = pm
+    return out
+
+
+def latest_value(df: pd.DataFrame, p: str) -> float:
+    s = df[p].dropna()
+    return s.iloc[-1] if len(s) else np.nan
+
+
+if raw and params and m is not None and not m.empty:
+    st.divider()
+    st.subheader("Cross metrics analysis")
+    with st.spinner("Fetching top companies' data..."):
+        peers = load_peers(symbol)
+
+    if not peers:
+        st.warning("Could not fetch the top companies' data right now. "
+                   "Please try again in a minute.")
+    else:
+        all_data = {company: m, **peers}
+        peer_names = list(peers)
+        st.caption(f"{company} vs top companies by market cap: "
+                   f"{', '.join(peer_names)}. Each company's latest reported "
+                   f"quarter is used.")
+
+        # ---- table: latest quarter, company vs top 3
+        rows = []
+        for p in params:
+            vals = {n: latest_value(d, p) for n, d in all_data.items()}
+            mine = vals[company]
+            others = [vals[n] for n in peer_names if pd.notna(vals[n])]
+            row = {"Parameter": p}
+            for n, v in vals.items():
+                row[n] = fmt(p, v) if pd.notna(v) else "n/a"
+            if pd.notna(mine) and others:
+                med = float(np.median(others))
+                row["Top-3 median"] = fmt(p, med)
+                row["Vs top-3 median"] = ("Above" if mine > med
+                                          else "Below" if mine < med else "Equal")
+                rank = 1 + sum(v > mine for v in others)
+                row["Rank (1 = highest)"] = f"{rank} of {len(others) + 1}"
+            else:
+                row["Top-3 median"] = row["Vs top-3 median"] = "n/a"
+                row["Rank (1 = highest)"] = "n/a"
+            rows.append(row)
+        # st.dataframe can't style header cells, so render an HTML table
+        # (peer company headers get a blue tint; works in light and dark mode)
+        cross_df = pd.DataFrame(rows)
+        head = "".join(
+            f'<th class="peer">{html.escape(c)}</th>' if c in peer_names
+            else f"<th>{html.escape(c)}</th>"
+            for c in cross_df.columns)
+        body = "".join(
+            "<tr>" + "".join(f"<td>{html.escape(str(v))}</td>" for v in r)
+            + "</tr>"
+            for r in cross_df.itertuples(index=False))
+        st.html(f"""
+<style>
+.xtbl-wrap{{overflow-x:auto}}
+.xtbl{{width:100%;border-collapse:collapse;font-size:.9rem}}
+.xtbl th,.xtbl td{{padding:8px 12px;text-align:left;
+  border:1px solid rgba(128,128,128,.3)}}
+.xtbl th{{font-weight:600;background:rgba(128,128,128,.12)}}
+.xtbl th.peer{{background:rgba(66,133,244,.30)}}
+</style>
+<div class="xtbl-wrap"><table class="xtbl">
+<thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>""")
+        st.caption("Rank 1 means the highest value, not necessarily the best "
+                   "(for example, a high Interest or Expenses figure is not "
+                   "good news). Rs Cr figures also reflect company size, so "
+                   "ratios like OPM %, ROE % and ROCE % compare more fairly.")
+
+        # ---- chart: one metric over time, all companies together
+        metric = st.selectbox("Compare trend of", params, key="cross_metric")
+        is_pct = "%" in metric
+        normalise = st.checkbox(
+            "Index to 100 at the first quarter (compare growth, not size)",
+            key="cross_norm", disabled=is_pct)
+        normalise = normalise and not is_pct
+
+        frames = []
+        for n, d in all_data.items():
+            s = d[metric].dropna()
+            if s.empty:
+                continue
+            v = s.values
+            if normalise and v[0] != 0:
+                v = v / abs(v[0]) * 100
+            frames.append(pd.DataFrame(
+                {"Quarter end": s.index, metric: v, "Company": n}))
+
+        if frames:
+            fig = px.line(pd.concat(frames), x="Quarter end", y=metric,
+                          color="Company", markers=True)
+            fig.update_layout(template="simple_white", height=320,
+                              margin=dict(l=0, r=0, t=10, b=0),
+                              xaxis_title=None, yaxis_title=None)
+            fig.update_xaxes(tickformat="%b %Y")
+            st.plotly_chart(fig, width="stretch")
+        else:
+            st.caption("Data not available for this parameter.")
